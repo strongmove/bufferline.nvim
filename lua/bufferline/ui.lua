@@ -328,7 +328,7 @@ local function add_suffix(context)
     highlight = element.modified and hl.modified or nil,
   }
   local close = get_close_icon(element.id, context)
-  return not element.modified and close or modified
+  return element.modified and modified or nil
 end
 
 --- TODO: We increment the buffer length by the separator although the final
@@ -482,22 +482,13 @@ function M.element(current_state, element)
 
   local component = filter_invalid({
     tab_click_handler(element.id),
-    indicator,
-    left_space,
     set_id(number_item, components.id.number),
-    spacing({ when = number_item }),
     set_id(icon, components.id.icon),
-    spacing({ when = icon }),
     set_id(group_item, components.id.groups),
-    spacing({ when = group_item }),
     set_id(duplicate_prefix, components.id.duplicates),
     set_id(name, components.id.name),
-    spacing({ when = name, highlight = curr_hl.buffer }),
     set_id(diagnostic, components.id.diagnostics),
-    spacing({ when = diagnostic and #diagnostic.text > 0 }),
-    right_space,
     suffix,
-    spacing({ when = suffix }),
   })
 
   element.component = create_renderer(left, right, component)
